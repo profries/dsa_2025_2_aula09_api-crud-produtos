@@ -10,15 +10,15 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/produtos', (req, res)=> {
-    res.json(produtoService.listar());
+app.get('/produtos', async (req, res)=> {
+    res.json(await produtoService.listar());
 })
 
 
-app.post('/produtos', (req, res)=> {
+app.post('/produtos', async (req, res)=> {
     let produto = req.body;
     try { 
-        produtoService.inserir(produto);
+        produto = await produtoService.inserir(produto);
         res.status(201).json(produto);
     }
     catch(err) {
@@ -26,29 +26,29 @@ app.post('/produtos', (req, res)=> {
     }
 })
 
-app.get('/produtos/:id', (req, res)=> {    
+app.get('/produtos/:id', async (req, res)=> {    
     const id = +req.params.id;
     try {
-        res.json(produtoService.buscarPorId(id));
+        res.json(await produtoService.buscarPorId(id));
     } catch(err) {
         res.status(err.id).json(err);
     }
 })
 
-app.put('/produtos/:id', (req, res)=> {
+app.put('/produtos/:id', async (req, res)=> {
     const id = +req.params.id;
     let produto = req.body;
     try{
-        res.json(produtoService.atualizar(id, produto));
+        res.json(await produtoService.atualizar(id, produto));
     } catch(err) {
         res.status(err.id).json(err);
     }
 })
 
-app.delete('/produtos/:id', (req, res)=> {
+app.delete('/produtos/:id', async (req, res)=> {
     const id = +req.params.id;
     try {
-        res.json(produtoService.deletar(id));
+        res.json(await produtoService.deletar(id));
     } catch(err) {
         res.status(err.id).json(err);
     }
